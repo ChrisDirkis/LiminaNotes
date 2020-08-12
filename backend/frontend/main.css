@@ -1,0 +1,83 @@
+body {
+    background-color: #000;
+    color: #FFF;
+    font-family: sans-serif;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+}
+
+.header {
+    height: 3em;
+
+    padding-left: 1em;
+    border-bottom: #FFF 1px solid;
+}
+
+.login {
+
+}
+
+.main {
+    display: none;
+}
+
+
+/* Main layout */
+
+.mainContent {
+    display: grid;
+    grid-template: 
+        "edit todo"
+        / auto auto;
+}
+
+/* Editing */
+
+.edit {
+    grid-area: "edit";
+    border-right: #fff 1px solid;
+
+    display: flex;
+    flex-direction: column;
+    
+    padding: 2em;
+}
+
+.edit textarea {
+    resize: vertical;
+    background-color: #222;
+    color:#fff;
+    font-family: consolas, monospace;
+}
+
+.notesButton {
+    float: right;
+}
+
+/* TODOs */
+
+.todo {
+    grid-area: "todo";
+
+    padding: 1em;
+}
+
+/* Mobile/small screen */
+
+@media (max-width: 800px) {
+    .mainContent {
+        grid-template: 
+            "edit"
+            "todo"
+            / auto;
+    }
+
+    .edit {
+        border-right: none;
+        padding: 1em;
+    }
+}
+

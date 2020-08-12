@@ -25,6 +25,7 @@ const getPath = () => {
 }
 
 
+app.use(express.static("frontend"));
 app.use(express.text());
 app.use(session({
     cookie: { maxAge: 86400000 * 7 },
@@ -34,18 +35,31 @@ app.use(session({
     secret: 'drama llama'
 }));
 
+app.get("/loggedIn", (req: any, res: any) => {
+    if (req.session.authenticated) {
+        console.log("Already logged in");
+        res.sendStatus(200);
+    }
+    else {
+        console.log("Not logged in");
+        res.sendStatus(403);
+    }
+});
 
 app.post("/login", (req: any, res: any) => {
     if (req.session.authenticated) {
+        console.log("Already logged in");
         res.sendStatus(200);
         return;
     }
 
     if (req.body === process.env.PASSWORD) {
+        console.log("Login success");
         req.session.authenticated = true;
         res.sendStatus(200);
     }
     else {
+        console.log("Login fail");
         res.sendStatus(403);
     }
 });
