@@ -10,3 +10,6 @@ npm-debug.log*
 # dotenv environment variables file
 .env
 .env.test
+
+# notes dir
+notes/
