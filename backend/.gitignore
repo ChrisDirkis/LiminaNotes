@@ -1,0 +1,12 @@
+# npm stuff
+.npm
+node_modules/
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# dotenv environment variables file
+.env
+.env.test
