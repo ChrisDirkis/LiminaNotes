@@ -10,8 +10,6 @@ body {
 }
 
 .header {
-    height: 3em;
-
     padding-left: 1em;
     border-bottom: #FFF 1px solid;
 }
@@ -77,6 +75,7 @@ body {
 
     .edit {
         border-right: none;
+        border-bottom: #fff 1px solid;
         padding: 1em;
     }
 }
