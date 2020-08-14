@@ -136,13 +136,13 @@ window.onload = () => {
         goToToday(notesTextArea);
     }
 
+    notesTextArea.oninput = () => { UpdateTodos(notesTextArea.value, todoContainer) };
     
     // ctrl-s shortcut to save
     document.addEventListener("keydown", (event) => {
         if (event.key === "s" && event.ctrlKey) {
             event.preventDefault();        
             httpPostAsync("/notes", notesTextArea.value, () => {console.log("saved!")});
-            UpdateTodos(notesTextArea.value, todoContainer)
         }
     });
 }
