@@ -111,7 +111,7 @@ app.post("/notes", authenticated, (req: any, res: any) => {
 
 var port = Number.parseInt(process.env.PORT);
 
-if (process.env.production) {
+if (process.env.HTTPS) {
     https.createServer(app).listen(port , () => {
         console.log(`HTTPS server started, port ${port}`);
     });
