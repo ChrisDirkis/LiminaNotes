@@ -70,7 +70,9 @@ function goToToday(textArea) {
         // search for the first date
         const line = textContent[i];
         if (line.match(dateRegex)) {
-            const dateString = new Date(Date.now()).toISOString().substr(0, 10);
+            const timezone = 10;
+            const offset = timezone * 60 * 60 * 1000;
+            const dateString = new Date(Date.now() - timezone).toISOString().substr(0, 10);
 
             // If we're at today, search for the end of today. If we fail, bail
             if (line === dateString) {

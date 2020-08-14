@@ -12,14 +12,15 @@ dotenv.config();
 const MemoryStore = memoryStore(session);
 const app = express();
 
-
 const authenticated = (req: any, res: any, next: any) => {
     if (req.session.authenticated) next();
     else res.status(403).send();
 }
 
 const getPath = () => {
-    const dateString = new Date(Date.now()).toISOString().substr(0, 10);
+    const timezone = Number.parseInt(process.env.timezone);
+    const offset = timezone * 60 * 60 * 1000;
+    const dateString = new Date(Date.now() + offset).toISOString().substr(0, 10);
     const path = `${__dirname}/${process.env.NOTESPATH}/${dateString}.txt`;
     return path;
 }
