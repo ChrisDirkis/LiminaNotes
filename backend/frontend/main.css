@@ -29,7 +29,7 @@ body {
     display: grid;
     grid-template: 
         "edit todo"
-        / auto auto;
+        / 50% 50%;
 }
 
 /* Editing */
@@ -61,6 +61,15 @@ body {
     grid-area: "todo";
 
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.todoItem {
+    border: #FFF 2px solid;
+    border-radius: .3em;
+    padding: 0.2em 0.5em;
+    margin: 0.5em;
 }
 
 /* Mobile/small screen */

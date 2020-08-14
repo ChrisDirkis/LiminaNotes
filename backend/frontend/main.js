@@ -1,3 +1,13 @@
+function $e(t='div',p={},c=[]){
+    let el=document.createElement(t);
+    Object.assign(el,p);
+    el.append(...c);
+    return el;
+}
+  
+const $t=document.createTextNode.bind(document);
+
+
 function httpGetAsync(url, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
@@ -19,16 +29,41 @@ function httpPostAsync(url, content, callback) {
     xmlHttp.send(content);
 }
 
-function loadMainContent(login, main, textArea) {
+function loadMainContent(login, main, textArea, todoContainer) {
     login.style.display = "none";
     main.style.display = "block";
-    httpGetAsync("/notes", v => textArea.value = v);
+    httpGetAsync("/notes", v => UpdateAllContent(v, textArea, todoContainer));
 }
 
+function UpdateAllContent(content, textArea, todoContainer) {
+    textArea.value = content;
+    
+    UpdateTodos(content, todoContainer);
+}
+function UpdateTodos(content, todoContainer) {
+    let child = todoContainer.lastElementChild;
+    while (child) {
+        todoContainer.removeChild(child);
+        child = todoContainer.lastElementChild;
+    }
+    
+    const todosRegex = /todo: .*\n[^\[]/gmi;
+    const todoRegex = /todo: (.*)\n/i;
+
+    const todos = content.match(todosRegex);
+    
+    for (const todo of todos) {
+        todoContainer.appendChild(
+            $e("div", {className: "todoItem"}, 
+                [$t(todo.match(todoRegex)[1])]
+            )
+        );
+    }
+}
 
 function goToToday(textArea) {
     const textContent = textArea.value.split("\n");
-    const dateRegex=/\d\d\d\d\-\d\d\-\d\d/;
+    const dateRegex=/\d{4}-\d{2}-\d{2}/;
 
     let charCounter = 0;
     for (let i = 0; i < textContent.length; i++) {
@@ -80,15 +115,16 @@ window.onload = () => {
 
     const goToTodayButton = document.getElementById("goToToday");
 
+    const todoContainer = document.getElementById("todoContainer");
 
     // Check if we're logged in
     httpGetAsync("loggedIn", () =>  {
-        loadMainContent(login, main, notesTextArea);
+        loadMainContent(login, main, notesTextArea, todoContainer);
     });
 
     loginButton.onclick = () => {
         httpPostAsync("/login", loginInput.value, () => {
-            loadMainContent(login, main, notesTextArea);
+            loadMainContent(login, main, notesTextArea, todoContainer);
         })
     }
 
@@ -106,6 +142,7 @@ window.onload = () => {
         if (event.key === "s" && event.ctrlKey) {
             event.preventDefault();        
             httpPostAsync("/notes", notesTextArea.value, () => {console.log("saved!")});
+            UpdateTodos(notesTextArea.value, todoContainer)
         }
     });
 }
