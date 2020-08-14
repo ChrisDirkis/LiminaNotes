@@ -108,6 +108,7 @@ function goToToday(textArea) {
 window.onload = () => {
     const login = document.getElementById("login");
     const main = document.getElementById("main");
+    
 
     const notesTextArea = document.getElementById("notesTextArea");
     const notesButton = document.getElementById("notesButton");
@@ -140,10 +141,18 @@ window.onload = () => {
 
     notesTextArea.oninput = () => { UpdateTodos(notesTextArea.value, todoContainer) };
     
+    // enter shortcut to login
+    loginInput.addEventListener("keyup", e => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            loginButton.click();
+        }
+    });
+
     // ctrl-s shortcut to save
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "s" && event.ctrlKey) {
-            event.preventDefault();        
+    document.addEventListener("keydown", e => {
+        if (e.key === "s" && e.ctrlKey) {
+            e.preventDefault();        
             httpPostAsync("/notes", notesTextArea.value, () => {console.log("saved!")});
         }
     });
