@@ -18,7 +18,7 @@ const authenticated = (req: any, res: any, next: any) => {
 }
 
 const getPath = () => {
-    const timezone = Number.parseInt(process.env.timezone);
+    const timezone = Number.parseInt(process.env.TIMEZONE);
     const offset = timezone * 60 * 60 * 1000;
     const dateString = new Date(Date.now() + offset).toISOString().substr(0, 10);
     const path = `${__dirname}/${process.env.NOTESPATH}/${dateString}.txt`;
@@ -110,11 +110,12 @@ app.post("/notes", authenticated, (req: any, res: any) => {
 });
 
 const port = Number.parseInt(process.env.PORT);
-const privateKey  = fs.readFileSync(process.env.PRIVATEKEY, 'utf8');
-const certificate = fs.readFileSync(process.env.CERTIFICATE, 'utf8');
-const credentials = {key: privateKey, cert: certificate};
 
 if (process.env.HTTPS) {
+    const privateKey  = fs.readFileSync(process.env.PRIVATEKEY, 'utf8');
+    const certificate = fs.readFileSync(process.env.CERTIFICATE, 'utf8');
+    const credentials = {key: privateKey, cert: certificate};
+
     https.createServer(credentials, app).listen(443 , () => {
         console.log(`HTTPS server started, port 443`);
     });
